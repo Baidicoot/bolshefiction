@@ -1,0 +1,8 @@
+[package]
+name = "bolshefiction"
+version = "0.1.0"
+authors = ["Aidan K. Ewart <aidanprattewart@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+hyper = "0.12.25"
