@@ -8,14 +8,20 @@ use regex::Regex;
 use markov_chain::Chain;
 use std::boxed::Box;
 
-pub type MarxovChain = Chain<u8>;
+pub type MarxovChain = Chain<char>;
 
 lazy_static! {
     static ref SENT: Regex = Regex::new(r"[A-Z].*?\.").unwrap();
 }
 
 pub fn train(order: usize) -> MarxovChain {
-    let text = fs::read("manifesto.txt").unwrap();
+    let text = fs::read("manifesto.txt").unwrap()
+        .iter()
+        .map(|x| {
+            *x as char
+        })
+        .collect();
+    
     let mut chain = Chain::new(order);
 
     chain.train(text);
@@ -25,7 +31,7 @@ pub fn train(order: usize) -> MarxovChain {
 
 pub fn get(chain: &MarxovChain) -> Option<String> {
     let data = &chain.generate();
-    let string = String::from_utf8_lossy(data);
+    let string: String = data.into_iter().collect();
 
     match SENT.captures(&string) {
         Some(x) => Some(x[0].to_owned()),
