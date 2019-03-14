@@ -6,7 +6,6 @@ extern crate markov_chain;
 use std::fs;
 use regex::Regex;
 use markov_chain::Chain;
-use std::boxed::Box;
 
 pub type MarxovChain = Chain<char>;
 
@@ -17,6 +16,15 @@ lazy_static! {
 pub fn train(order: usize) -> MarxovChain {
     let text = String::from_utf8_lossy(&fs::read("manifesto.txt").unwrap())
         .chars()
+        .map(|x| {
+            match x {
+                '“' => '"',
+                '”' => '"',
+                '’' => '\'',
+                '–' => '-',
+                u => u,
+            }
+        })
         .filter(|x| {
             x.is_ascii()
         })
