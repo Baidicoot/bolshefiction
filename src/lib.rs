@@ -15,8 +15,13 @@ lazy_static! {
 }
 
 pub fn train(order: usize) -> MarxovChain {
-    let text = String::from_utf8_lossy(&fs::read("manifesto.txt").unwrap()).chars().collect();
-    
+    let text = String::from_utf8_lossy(&fs::read("manifesto.txt").unwrap())
+        .chars()
+        .filter(|x| {
+            x.is_ascii()
+        })
+        .collect();
+
     let mut chain = Chain::new(order);
 
     chain.train(text);
