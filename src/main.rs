@@ -19,20 +19,17 @@ fn main() {
 
     let chain = bolshefiction::train(8);
 
-    let template = fs::read_to_string("template.html").unwrap();
-
     println!("Initialized Processes.");
 
     let server = Server::bind(&addr)
         .serve(move || {
             let a = chain.clone();
-            let t = template.clone();
 
             service_fn_ok(move |req: Request<Body>| {
                 if req.uri().path() == "/" {
                     let phrase = bolshefiction::get(&a).unwrap();
 
-                    let response = REPLACER.replace_all(&t, |_: &Captures| {
+                    let response = REPLACER.replace_all(&fs::read_to_string("template.html").unwrap(), |_: &Captures| {
                             phrase.to_string()
                         }).to_string();
 

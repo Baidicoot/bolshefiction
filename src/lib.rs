@@ -41,8 +41,12 @@ pub fn get(chain: &MarxovChain) -> Option<String> {
     let data = &chain.generate();
     let string: String = data.into_iter().collect();
 
-    match SENT.captures(&string) {
-        Some(x) => Some(x[0].to_owned()),
-        None => None,
+    let mut ret = String::new();
+
+    for i in SENT.captures_iter(&string) {
+        ret.extend(i[0].chars());
+        ret.extend("<br><br>".chars());
     }
+
+    Some(string)
 }
