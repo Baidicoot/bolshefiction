@@ -31,6 +31,15 @@ h1 {
     font-size: 4rem;
 }
 
+a {
+    color: unset;
+    text-decoration: unset;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 #phrase {
     margin: auto;
     width: 50%;
@@ -62,11 +71,29 @@ main {
     font-weight: lighter;
     padding: 0.5rem 1rem;
 }
+
+@media(max-width: 1000px) {
+    header {
+        width: 80%;
+    }
+
+    #phrase {
+        width: 70%;
+    }
+
+    #sign {
+        width: 50%;
+    }
+
+    #button {
+        font-size: 2rem;
+    }
+}
 </style>
 </head>
 <body>
 <header>
-<h1>bolshefiction</h1>
+<a href="/about"><h1>bolshefiction</h1></a>
 <p id="slogan">Communism, as a Service</p>
 <p id="info">By Aidan Ewart</p>
 </header>

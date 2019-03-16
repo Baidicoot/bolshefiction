@@ -29,13 +29,19 @@ fn main() {
             let t = template.clone();
 
             service_fn_ok(move |req: Request<Body>| {
-                let phrase = bolshefiction::get(&a).unwrap();
-                
-                let response = REPLACER.replace_all(&t, |_: &Captures| {
-                        phrase.to_string()
-                    }).to_string();
+                if req.uri().path() == "/" {
+                    let phrase = bolshefiction::get(&a).unwrap();
 
-                Response::new(Body::from(response))
+                    let response = REPLACER.replace_all(&t, |_: &Captures| {
+                            phrase.to_string()
+                        }).to_string();
+
+                    Response::new(Body::from(response))
+                } else if req.uri().path() == "/about" {
+                    Response::new(Body::from(fs::read_to_string("about.html").unwrap()))
+                } else {
+                    Response::new(Body::from("404 ERROR: PAGE NOT FOUND"))
+                }
             })
         })
         .map_err(|e| eprintln!("server error: {}", e));
